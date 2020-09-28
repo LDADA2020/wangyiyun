@@ -5,14 +5,13 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
     mode: 'history',
-    routes: [
-        {
+    routes: [{
             path: '/',
-            redirect:'/mine'
+            redirect: '/mine'
         },
         {
             path: '/mine',
-            component: () => import ('../views/mine/index.vue'),
+            component: () => import('../views/mine/index.vue'),
         },
         {
             path: '/find',
@@ -21,7 +20,7 @@ const router = new VueRouter({
         {
             path: '/village',
             component: () => import('../views/village/index.vue')
-        }, 
+        },
         {
             path: '/video',
             component: () => import('../views/video/index.vue')
@@ -29,8 +28,12 @@ const router = new VueRouter({
         {
             path: '/search',
             component: () => import('../views/search/index.vue')
+        },
+        {
+            path: '/audio',
+            component: () => import('../views/audio/index.vue')
         }
     ],
-    linkActiveClass : 'active'
+    linkActiveClass: 'active'
 })
 export default router
