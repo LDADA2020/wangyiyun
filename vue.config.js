@@ -1,138 +1,60 @@
-'use strict'
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
+const CompressionPlugin = require('compression-webpack-plugin') // compression-webpack-plugin插件需要npm安装
 
 function resolve(dir) {
-  return path.join(__dirname, dir)
+    return path.join(__dirname, dir)
 }
-
-const name = defaultSettings.title || 'vue Element Admin' // page title
-
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following method:
-// port = 9527 npm run dev OR npm run dev --port = 9527
-const port = process.env.port || process.env.npm_config_port || 9527 // dev port
-
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-  /**
-   * You will need to set publicPath if you plan to deploy your site under a sub path,
-   * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-   * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
-   * Detail: https://cli.vuejs.org/config/#publicpath
-   */
-  publicPath: '/',
-  outputDir: 'dist',
-  assetsDir: 'static',
-  // lintOnSave: process.env.NODE_ENV === 'development',
-  lintOnSave: false,
-  productionSourceMap: false,
-  devServer: {
-    port: port,
-    open: true,
-    overlay: {
-      warnings: false,
-      errors: true
-    },
-    proxy: {   // 配置跨域代理
-      // change xxx-api/login => mock/login
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
-        // target: `http://test.xxx.com`,  // 跨域代理  开发环境   test.xxx.com
-        target: `http://127.0.0.1:8888`,  // 生产环境       xxx.com
-        // target: `http://127.0.0.1:8888/test/`,  // 开发环境
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
-    // before: require('./mock/mock-server.js')
-  },
-  configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
-      }
-    }
-  },
-  chainWebpack(config) {
-    // it can improve the speed of the first screen, it is recommended to turn on preload
-    // it can improve the speed of the first screen, it is recommended to turn on preload
-    config.plugin('preload').tap(() => [
-      {
-        rel: 'preload',
-        // to ignore runtime.js
-        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
-    ])
-
-    // when there are many pages, it will cause too many meaningless requests
-    config.plugins.delete('prefetch')
-
-    // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
-    config.module
-      .rule('icons')
-      .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
-      .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]'
-      })
-      .end()
-
-    config
-      .when(process.env.NODE_ENV !== 'development',
-        config => {
-          config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .after('html')
-            .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
-              inline: /runtime\..*\.js$/
-            }])
-            .end()
-          config
-            .optimization.splitChunks({
-              chunks: 'all',
-              cacheGroups: {
-                libs: {
-                  name: 'chunk-libs',
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: 'initial' // only package third parties that are initially dependent
-                },
-                elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                },
-                commons: {
-                  name: 'chunk-commons',
-                  test: resolve('src/components'), // can customize your rules
-                  minChunks: 3, //  minimum common number
-                  priority: 5,
-                  reuseExistingChunk: true
+    lintOnSave: 'error', // 设置eslint报错时停止代码编译
+    productionSourceMap: false, // 不需要生产环境的 source map（减小dist文件大小，加速构建）
+    devServer: {
+        open: true, // npm run serve后自动打开页面
+        host: '0.0.0.0', // 匹配本机IP地址(默认是0.0.0.0)
+        port: 8989, // 开发服务器运行端口号
+        proxy: {
+            [process.env.VUE_APP_BASE_API]: {
+                target: 'https://music.api.mcloc.cn', // 代理接口地址
+                secure: true, // 如果是https接口，需要配置这个参数
+                changeOrigin: true, // 是否跨域
+                pathRewrite: {
+                    ['/api' + process.env.VUE_APP_BASE_API]: '' //需要rewrite的, 这里理解成以'/api'开头的接口地址，把/api代替target中的地址
                 }
-              }
-            })
-          // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
-          config.optimization.runtimeChunk('single')
+            }
         }
-      )
-  }
+    },
+    chainWebpack: (config) => {
+        // 移除 prefetch 插件(针对生产环境首屏请求数进行优化)
+        config.plugins.delete('prefetch')
+        // 移除 preload 插件(针对生产环境首屏请求数进行优化)   preload 插件的用途：https://cli.vuejs.org/zh/guide/html-and-static-assets.html#preload
+        config.plugins.delete('preload')
+        // 第1个参数：别名，第2个参数：路径  （设置路径别名）
+        config.resolve.alias
+            .set('@pages', resolve('./src/page'))
+            .set('@router', resolve('./src/router'))
+            .set('@store', resolve('./src/store'))
+            .set('@utils', resolve('./src/utils'))
+    },
+    // 配置打包 js、css文件为.gz格式，优化加载速度  （参考：https://blog.csdn.net/qq_31677507/article/details/102742196）
+    configureWebpack: config => {
+        if (process.env.NODE_ENV === 'production') {
+            return {
+                plugins: [new CompressionPlugin({
+                    test: /\.js$|\.css/, // 匹配文件
+                    threshold: 10240, // 超过10kB的数据进行压缩
+                    deleteOriginalAssets: false // 是否删除原文件 （原文件也建议发布到服务器以支持不兼容gzip的浏览器）
+                })],
+                performance: { // 生产环境构建代码文件超出以下配置大小会在命令行中显示警告
+                    hints: 'warning',
+                    // 入口起点的最大体积 整数类型（以字节为单位,默认值是：250000 (bytes)）
+                    maxEntrypointSize: 5000000,
+                    // 生成文件的最大体积 整数类型（以字节为单位,默认值是：250000 (bytes)）
+                    maxAssetSize: 3000000
+                    // // 只给出 js 文件的性能提示
+                    // assetFilter: function (assetFilename) {
+                    //   return assetFilename.endsWith('.js')
+                    // }
+                }
+            }
+        }
+    }
 }
