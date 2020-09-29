@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div class="find">
     <mt-swipe :auto="4000">
       <mt-swipe-item v-for="item in banners" :key="item.bannerId"
@@ -27,15 +26,10 @@
         <p class="p3">专辑：{{ item.song.album.name }}</p>
       </el-col>
     </el-row>
-=======
-  <div>
-      发现
->>>>>>> origin/eight
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 
@@ -164,13 +158,3 @@ export default {
   text-overflow: ellipsis;
 }
 </style>
-=======
-export default {
-
-}
-</script>
-
-<style>
-
-</style>
->>>>>>> origin/eight
