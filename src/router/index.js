@@ -19,7 +19,8 @@ const router = new VueRouter({
         },
         {
             path: '/find',
-            component: () => import('../views/find/index.vue')
+            component: () =>
+                import ('../views/find/index.vue')
         },
         {
             path: '/toplistsdetail',
@@ -27,19 +28,35 @@ const router = new VueRouter({
         },
         {
             path: '/village',
-            component: () => import('../views/village/index.vue')
+            component: () =>
+                import ('../views/village/index.vue'),
+            redirect: '/village/square',
+            children: [{
+                path: 'square',
+                name: 'Square',
+                component: () =>
+                    import ("../views/village/square/index.vue")
+            }, {
+                path: 'concer',
+                name: 'Concer',
+                component: () =>
+                    import ("../views/village/concer/index.vue")
+            }]
         },
         {
             path: '/video',
-            component: () => import('../views/video/index.vue')
+            component: () =>
+                import ('../views/video/index.vue')
         },
         {
             path: '/search',
-            component: () => import('../views/search/index.vue')
+            component: () =>
+                import ('../views/search/index.vue')
         },
         {
             path: '/audio',
-            component: () => import('../views/audio/index.vue')
+            component: () =>
+                import ('../views/audio/index.vue')
         },
         {
             path: '/login',
