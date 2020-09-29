@@ -44,10 +44,8 @@ export default {
   },
 };
 </script>
-<style>
-#header {
-  display: none;
-}
+<style scoped>
+
 #audio-index {
   width: 90%;
   /* background-color: antiquewhite; */

@@ -15,7 +15,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 #outer{
   margin: 0 30px;
 }

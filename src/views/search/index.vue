@@ -86,7 +86,7 @@ export default {
   }
 };
 </script>
-<style scope>
+<style scoped>
 .container{
   width:300px;
   min-height: 40px;
