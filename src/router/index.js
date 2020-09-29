@@ -22,6 +22,10 @@ const router = new VueRouter({
             component: () => import('../views/find/index.vue')
         },
         {
+            path: '/toplistsdetail',
+            component: () => import("../views/find/toplistsdetail.vue")
+        },
+        {
             path: '/village',
             component: () => import('../views/village/index.vue')
         },
