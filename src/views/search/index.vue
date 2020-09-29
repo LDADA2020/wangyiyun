@@ -2,9 +2,9 @@
   <div>
     <div class="container">
         <i class="el-icon-back"></i>
-        <input type="text" v-model='val' v-on:input="getList" placeholder="王铮亮">
-        <ul>
-          <li v-for="(item,index) in list" :key="item.id" :value="index">{{item.name}}</li>
+        <input type="text"  v-model='val'  placeholder="王铮亮">
+        <ul class="search">
+          <!-- <li v-for="(item,index) in list" :key="item.id" :value="index">{{item.name}}</li> -->
         </ul>
         <div class="tu">
           <img src="../../assets/tu.png" alt="" class="img1">
@@ -68,6 +68,7 @@ export default {
   watch:{},
   //方法集合
   created(){
+    this.getList();
   },
   methods:{
     getList(){
@@ -75,11 +76,11 @@ export default {
       method:'get',
       url:'api/cloudsearch',
       params:{
-        keywords:'this.value',
+        keywords:'this.val',
       },
     }).then((res)=>{
-      // console.log(res.data.result.songs);
-      this.list=res.data.result.songs;
+      console.log(res.data.result.songs);
+      // this.list=res.data.result.songs;
     }
     );
     }
@@ -139,9 +140,12 @@ input{
     color:gray;
     line-height: 40px;
   }
-  li{
+  /* li{
     border-radius: 10px;
     float: left;
     margin: 3px 0;
+  } */
+  .search li{
+    
   }
 </style>
