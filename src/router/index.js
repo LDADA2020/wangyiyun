@@ -36,7 +36,11 @@ const router = new VueRouter({
         {
             path: '/login',
             component: () => import('../views/login/index.vue')
-        }
+        },
+        {
+            path: '/deng',
+            component: () => import('../views/login/deng.vue')
+        },
     ],
     linkActiveClass: 'active'
 })

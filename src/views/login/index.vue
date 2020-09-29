@@ -3,28 +3,29 @@
     <!-- <i class="el-icon-platform-eleme"></i> -->
     <div class="logo">
       <img src="../../assets/logo.gif" alt="" />
-
-      <button class="phone">
-        一键登录
-      </button>
-      <router-link tag="button" to="" class="go">
-        立即体验
-      </router-link>
-
-      <div class="more">
-        <i class="icon el-icon-s-check"></i>
-        <i class="icon el-icon-phone"></i>
-        <i class="icon el-icon-s-goods"></i>
-        <i class="icon el-icon-s-check"></i>
-        <div class="message" v-if="message">
-          请勾选同意《用户协议》和《隐私政策》
-        </div>
+    </div>
+    <div>
+      <button @click="getPhone" class="phone">一键登录</button>
+      >
+    </div>
+    <div>
+      <router-link tag="button" to="/" class="go"> 立即体验 </router-link>
+    </div>
+    <div class="more">
+      <i class="icon el-icon-s-check"></i>
+      <i class="icon el-icon-phone"></i>
+      <i class="icon el-icon-s-goods"></i>
+      <i class="icon el-icon-s-check"></i>
+      <div class="message" v-if="message">
+        请勾选同意《用户协议》和《隐私政策》
       </div>
-      <div class="message">
-        <input type="checkbox" v-if="flag" @click="flag = !flag" />
-        <input type="checkbox" v-else @click="flag = !flag" />
-        请勾选同意《用户协议》和《隐私政策》<br />《用户协议《用户协议》
-      </div>
+    </div>
+
+    <div class="text">
+      <span v-if="flag" @click="flag = !flag"><input type="checkbox" /></span>
+      <span v-else @click="flag = !flag"><input type="checkbox" /></span>
+
+      同意《用户协议》和《隐私政策》<br />《用户协议《用户协议》
     </div>
   </div>
 </template>
@@ -53,6 +54,7 @@ export default {
   methods: {
     // 方法
     getPhone() {
+      // alert(this.flag);
       if (this.flag) {
         this.message = true;
         setTimeout(() => {
@@ -60,7 +62,7 @@ export default {
         }, 3000);
       } else {
         this.$router.push({
-          path: "/phone",
+          path: "/deng",
         });
       }
     },
@@ -73,59 +75,59 @@ export default {
   },
 };
 </script>
-<style>
+<style lang='scss' >
 #header {
   display: none;
 }
 #home {
   width: 100%;
   height: 100%;
+  // min-height: 800px;
   background: #db2c1f;
+  overflow: hidden;
 }
-.logo {
-  padding: 170px;
-  padding: 165px;
-}
+
 .logo img {
-  width: 100px;
-  /* height: 100px; */
+  margin-top: 100px;
+  margin-left: 145px;
+  // width: 100px;
 }
 .phone {
-  margin-left: -120px;
-  margin-top: 300px;
+  margin-left: 40px;
+  margin-top: 240px;
   width: 300px;
   height: 50px;
   line-height: 25px;
   border-radius: 25px;
 }
+
 .go {
   width: 300px;
   height: 50px;
-  margin-left: -120px;
+  margin-left: 40px;
   margin-top: 18px;
   border-radius: 25px;
 }
 .more {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
+  text-align: center;
   margin-top: 30px;
-  margin-left: -90px;
 }
 .icon {
   display: inline-block;
   text-align: center;
   color: white;
-  font-size: 40px;
+  font-size: 30px;
   margin-left: 20px;
 }
 .message {
-  position: absolute;
   width: 80%;
-  height: 50px;
-  line-height: 50px;
+  height: 20px;
+  // line-height: 50px;
   text-align: center;
-  margin-left: -110px;
+  margin-left: 20px;
+  background: rgba(0, 0, 0, 0.7);
+}
+.text {
+  text-align: center;
 }
 </style>
