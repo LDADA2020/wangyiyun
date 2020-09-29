@@ -36,7 +36,11 @@ const router = new VueRouter({
         {
             path: '/login',
             component: () => import('../views/login/index.vue')
-        }
+        },
+        {
+            path: 'audio/:id',
+            component: () => import('../views/audio/index.vue'),
+        },
     ],
     linkActiveClass: 'active'
 })
