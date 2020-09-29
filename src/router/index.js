@@ -11,7 +11,11 @@ const router = new VueRouter({
         },
         {
             path: '/mine',
-            component: () => import('../views/mine/index.vue'),
+            component: () => import('../views/mine/index.vue')
+        },
+        {
+            path: '/mine/mylist',
+            component: () => import('../views/mine/mylist/index.vue')
         },
         {
             path: '/find',
