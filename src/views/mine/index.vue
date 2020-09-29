@@ -1,9 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div>
-        我的
-    </div>
-=======
   <el-container class="clearfix mine-main">
       <div id="mine-message" class="clearfix">
         <div class="message-left"></div>
@@ -17,19 +12,10 @@
         </div>
       </div>
   </el-container>
->>>>>>> origin/eight
 </template>
 
 <script>
 export default {
-<<<<<<< HEAD
-
-}
-</script>
-
-<style>
-
-=======
   data() {
     return {};
   },
@@ -87,5 +73,4 @@ export default {
     top: 0;
   }
 }
->>>>>>> origin/eight
 </style>
