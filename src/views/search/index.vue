@@ -2,7 +2,10 @@
   <div>
     <div class="container">
         <i class="el-icon-back"></i>
-        <input type="text" placeholder="王铮亮">
+        <input type="text" v-model='val' v-on:input="getList" placeholder="王铮亮">
+        <ul>
+          <li v-for="(item,index) in list" :key="item.id" :value="index">{{item.name}}</li>
+        </ul>
         <div class="tu">
           <img src="../../assets/tu.png" alt="" class="img1">
         </div>
@@ -29,7 +32,7 @@
             <i class="el-icon-arrow-down"></i>
           </span>
         </div>
-        <div class="listen">
+        <!-- <div class="listen">
           <ul>
             <li>
               <img src="../../assets/listen.png" alt="">
@@ -43,25 +46,45 @@
              <li style="margin-left:10px">
               <img src="../../assets/listen.png" alt="">
             </li>
-            <li>
-              <img src="../../assets/listen.png" alt="">
-            </li>
-             <!-- <li style="margin-left:10px">
-              <img src="../../assets/listen.png" alt="">
-            </li>
-            <li>
-              <img src="../../assets/listen.png" alt="">
-            </li>
-             <li style="margin-left:10px">
-              <img src="../../assets/listen.png" alt="">
-            </li> -->
           </ul>
-        </div>
+        </div> -->
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  //import引入的组件需要注入到对象中才能使用
+  components:{},
+  data(){
+    //这里存放数据
+    return{
+      list:[],
+      val:''
+    };
+  },
+  //监听属性类似于data概念
+  computed:{},
+  //监控data中的数据变化
+  watch:{},
+  //方法集合
+  created(){
+  },
+  methods:{
+    getList(){
+    this.$http({
+      method:'get',
+      url:'api/cloudsearch',
+      params:{
+        keywords:'this.value',
+      },
+    }).then((res)=>{
+      // console.log(res.data.result.songs);
+      this.list=res.data.result.songs;
+    }
+    );
+    }
+  }
+};
 </script>
 <style scope>
 .container{
