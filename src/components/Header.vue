@@ -57,4 +57,7 @@ export default {
   font-size: 14px;
   line-height: 40px;
 }
+#header{
+  display: none;
+}
 </style>

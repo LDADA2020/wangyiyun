@@ -19,7 +19,8 @@ const router = new VueRouter({
         },
         {
             path: '/find',
-            component: () => import('../views/find/index.vue')
+            component: () =>
+                import('../views/find/index.vue')
         },
         {
             path: '/toplistsdetail',
@@ -64,11 +65,13 @@ const router = new VueRouter({
         },
         {
             path: '/search',
-            component: () => import('../views/search/index.vue')
+            component: () =>
+                import('../views/search/index.vue')
         },
         {
             path: '/audio',
-            component: () => import('../views/audio/index.vue')
+            component: () =>
+                import('../views/audio/index.vue')
         },
         {
             path: '/login',
@@ -78,6 +81,10 @@ const router = new VueRouter({
             path: '/deng',
             component: () => import('../views/login/deng.vue')
         },
+        {
+            path: '/register',
+            component: () => import('../views/register/index.vue')
+        }
     ],
     linkActiveClass: 'active'
 })
