@@ -28,8 +28,17 @@ const router = new VueRouter({
         },
         {
             path: '/village',
-            component: () =>
-                import ('../views/village/index.vue')
+            component: () => import('../views/village/index.vue'),
+            redirect: '/village/square',
+            children: [{
+                path: 'square',
+                name: 'Square',
+                component: () => import("../views/village/square/index.vue")
+            }, {
+                path: 'concer',
+                name: 'Concer',
+                component: () => import("../views/village/concer/index.vue")
+            }]
         },
         {
             path: '/video',
