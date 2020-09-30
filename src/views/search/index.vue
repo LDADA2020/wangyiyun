@@ -2,9 +2,9 @@
   <div>
     <div class="container">
         <i class="el-icon-back"></i>
-        <input type="text"  v-model='val'  placeholder="王铮亮">
+        <input type="text"  v-model='val' v-on:input="getList"  placeholder="王铮亮">
         <ul class="search">
-          <!-- <li v-for="(item,index) in list" :key="item.id" :value="index">{{item.name}}</li> -->
+          <li class="ttt" @click="getid(item.id)" v-for="(item,index) in list" :key="item.id" :value="index">{{item.name}}</li>
         </ul>
         <div class="tu">
           <img src="../../assets/tu.png" alt="" class="img1">
@@ -16,38 +16,17 @@
             播放全部</span>
         </div>
         <div class="hot">
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <span>6</span>
-          <span>7</span>
-          <span>8</span>
-          <span>9</span>
-          <span>10</span>
+          <span v-for="(item,index) in list1" :key="index">{{index+1}} {{item.searchWord}}</span>
         </div>
         <div class="more">
-          <span>展开更多热搜
+          <span @click='showmore'>展开更多热搜
             <i class="el-icon-arrow-down"></i>
+            <p v-show="flag" >
+            <span v-for="(item,index) in list1" :key="index">{{index+1}} {{item.searchWord}}</span>
+            </p>
           </span>
         </div>
-        <!-- <div class="listen">
-          <ul>
-            <li>
-              <img src="../../assets/listen.png" alt="">
-            </li>
-             <li style="margin-left:10px">
-              <img src="../../assets/listen.png" alt="">
-            </li>
-            <li>
-              <img src="../../assets/listen.png" alt="">
-            </li>
-             <li style="margin-left:10px">
-              <img src="../../assets/listen.png" alt="">
-            </li>
-          </ul>
-        </div> -->
+        <img src="../../assets/123.jpg" alt="">
     </div>
   </div>
 </template>
@@ -58,7 +37,9 @@ export default {
   data(){
     //这里存放数据
     return{
+      flag:false,
       list:[],
+      list1:[],
       val:''
     };
   },
@@ -68,22 +49,63 @@ export default {
   watch:{},
   //方法集合
   created(){
-    this.getList();
+    
+  },
+  mounted(){
+        this.getList1()
+        // this.gethotlist()
   },
   methods:{
-    getList(){
+    getid(id){
+      this.$router.push({
+        path:'/audio',
+       query:{id:id}
+      }
+
+      )
+
+    },
+
+
+    showmore(){
+     this.flag=!this.flag
+     this.$http({
+      method:'get',
+      url:'api/search/hot/detail',
+    }).then((res)=>{
+ this.list1=[]
+        const a =res.data.data;
+         this.list1=a.splice(0,20)
+    })
+    },
+    ///search/hot/detail
+    getList1(){
     this.$http({
       method:'get',
-      url:'api/cloudsearch',
-      params:{
-        keywords:'this.val',
-      },
+      url:'api/search/hot/detail',
     }).then((res)=>{
-      console.log(res.data.result.songs);
-      // this.list=res.data.result.songs;
+      const a =res.data.data;
+      this.list1=a.splice(0,10)
     }
     );
-    }
+    },
+    getList() {
+      console.log(this.val)
+      this.$http.get(`search?keywords= ${this.val}`).then((res)=>{
+       this.list=res.data.result.songs
+      //  console.log(res.data)
+      })
+    },
+    //获取歌单的分类
+    // gethotlist(){
+    // this.$http({
+    //   method:'get',
+    //   url:'api/dj/catelist',
+    // }).then((res)=>{
+    // console.log(res)
+    // }
+    // );
+    // }
   }
 };
 </script>
@@ -93,6 +115,7 @@ export default {
   min-height: 40px;
   margin: 0 auto;
   overflow: hidden;
+  position: relative;
 }
 input{
   margin-left: 20px;
@@ -144,8 +167,23 @@ input{
     border-radius: 10px;
     float: left;
     margin: 3px 0;
-  } */
-  .search li{
-    
-  }
+  }  */
+.search{
+  position: fixed;
+  top:10% ;
+  width: 80%;
+  
+  border: 1px solid #eeeeee;
+  background-color:#ffffff;
+}
+.ttt{
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  border-bottom: 2px dashed #eeeeee;
+}
+.ttt:hover{
+  color: #e63f3f;
+  font-size: 16px;
+}
 </style>
