@@ -5,29 +5,30 @@
         <p>象龟1706，今日热墙已更新，来围观吧！</p>
         <span class="dater">Sep. <br>28</span>
      </div>
-
   <div class="waterfall-wrapper">
             <ul class="left-waterfall" ref="left">
             <li class="item" v-for="(item, index) in list" :key="index" >
               <img :src="(item.picUrl)" alt="">
               <p>{{item.name}}</p>
-                <div>
-                <div class="touxiang"  :src="(item.program.dj.avatarUrl)"></div>
-                 <i class="descrip">{{item.program.dj.nickname}}</i>
-                </div>
+               <div class="demo-type">
+                  <div>
+                    <el-avatar  class="touxiang" :src="(item.program.dj.avatarUrl)"></el-avatar>
+                    <i class="descrip">{{item.program.dj.nickname}}</i>
+                  </div>
+              </div>
               </li>
             </ul>
-            <ul class="right-waterfall" ref="right">
-            <li class="item" v-for="(item, index) in rightItems"  :key="index" >
-            <img src="http://p1.music.126.net/tekKPPajUliAoSp69trGDQ==/109951164943012853.jpg" alt="">
-              <p>这里是描述或者评论</p>
-              <div class="demo-type">
-                <div>
-                <el-avatar class="touxiang"  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                 <i class="descrip">这是用户名描述</i>
-                </div>
-             </div>
-            </li>
+            <ul class="right-waterfall" ref="left">
+            <li class="item" v-for="(item, index) in list1[0]" :key="index" >
+              <img :src="(item.picUrl)" alt="">
+              <p>{{item.copywriter}}</p>
+               <div class="demo-type">
+                  <div>
+                    <el-avatar  class="touxiang" :src="(item.picUrl)"></el-avatar>
+                    <i class="descrip">{{item.name}}</i>
+                  </div>
+              </div>
+              </li>
             </ul>
   </div>
   </div>
@@ -37,42 +38,9 @@
 export default {
   data () {
     return {
-        data: [
-        {
-          height: 240,
-          name:'欣赏还要由心情',
-          p:'aishi1yi'
-        },
-        {
-          height: 269,
-            name:'欣赏还要由心情',
-          p:'aishi1yi'
-        },
-        {
-          height: 230,
-            name:'欣赏还要由心情',
-          p:'aishi1yi'
-        },
-        {
-          height: 240,
-            name:'欣赏还要由心情',
-          p:'aishi1yi'
-        },
-        {
-          height: 260,
-            name:'欣赏还要由心情',
-          p:'aishi1yi'
-        },
-        {
-          height: 250,
-            name:'欣赏还要由心情',
-          p:'aishi1yi'
-        }
-      ],
-      list:[],
-      leftItems: [],
-      rightItems: []
-
+        data:[],
+        list:[],
+        list1:[],
     }
   },
   props: {
@@ -82,29 +50,23 @@ export default {
 
   },
   mounted () {
-      this.updateWaterfall()
+      // this.updateWaterfall()
       this.getlist()
+      this.getlist2()
+      this.getargunments()
   },
   methods: {
-    updateWaterfall () {
-      const leftHeight = this.$refs.left.clientHeight
-      const rightHeight = this.$refs.right.clientHeight
-      let item = this.data.shift()
-      console.log(leftHeight)
-      console.log(rightHeight)
-      if (item == null) {
-        return
-      }
-      if (leftHeight <= rightHeight) {
-        this.leftItems.push(item)
-      }
-      else {
-        this.rightItems.push(item)
-      }
-      this.$nextTick(function () {
-        this.updateWaterfall()
+    //获取热评的评论
+    getargunments(){
+      this.$http({
+        method:'get',
+        url:'/api/comment/hotwall/list'
+
+      }).then((res)=>{
+        console.log(res)
       })
     },
+    
 // 获取一下歌手歌单
 getlist() {
       this.$http({
@@ -120,6 +82,17 @@ getlist() {
        console.log(this.list)
        
       });
+   },
+   getlist2(){
+     this.$http({
+       method:'get',
+       url:"/api/personalized/privatecontent/list"
+     }).then((res)=>{
+       const a =res.data.result
+      const b= a.slice(0,5)
+     this.list1.push(b)
+     console.log(this.list1[0])
+     })
    }
   },
   components: {
@@ -144,17 +117,18 @@ h4{
     color: #ffffff;
     font-weight: 700;
 }
-.el-icon-arrow-right{
-    font-size: 16px;
-    height: 10px;
-    font-weight: 700;
-}
+
 p{
+  width: 100%;
     font-size: 12px;
-    height: 20px;
-    line-height: 20px;
+    height: 40px;
+    line-height:40px;
      margin-left: 10px;
       color: #eeeeee;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
 }
 .dater{
     position: absolute;
@@ -185,6 +159,7 @@ p{
    }
   li{
     position: relative;
+    border: 1px solid #eeeeee;
   }
  li p{
 font-size: 12px;
@@ -196,22 +171,37 @@ color:black ;
   border-radius: 10px;
   margin: 10px 0;
   }
+  .demo-type{
+    width: 50px;
+    height: 50px;
+  }
   li img{
     width: 100%;
     height: 70%;
+    border-radius: 5%;
   }
   .descrip{
     position: absolute;
-    left: 27%;
+    width: 50%;
+    left: 18%;
     bottom: 5%;
-    font-size: 8px;
+    font-size: 6px;
+    color: rgb(182, 181, 181);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
   }
-.touxiang{
+  .ater{
+    width: 100px;
+    height: 100px;
+  }
+.touxiang,.touxiang img{
   size: 16px;
   position: absolute;
-  bottom: 5px;
+  bottom:3%;
   left: 2%;
+  width: 15%;
   height: 10%;
-  width: 10%;
+ 
 }
 </style>
