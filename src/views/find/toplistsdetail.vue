@@ -5,7 +5,12 @@
     </router-link>
     <p class="p1">{{ this.$route.query.name }}</p>
     <mt-spinner class="loading" v-if="flag" type="triple-bounce"></mt-spinner>
-    <el-row v-for="item in songList" :key="item.id" class="newSongItem" @click.native="goToSongDetail(item.id)">
+    <el-row
+      v-for="item in songList"
+      :key="item.id"
+      class="newSongItem"
+      @click.native="goToSongDetail(item.id)"
+    >
       <el-col :span="6">
         <img :src="item.al.picUrl" alt="" lazy />
       </el-col>
@@ -77,8 +82,8 @@ export default {
     },
 
     goToSongDetail(id) {
-      alert(id)
-    }
+      this.$router.push(`/audio?id=${id}`);
+    },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
