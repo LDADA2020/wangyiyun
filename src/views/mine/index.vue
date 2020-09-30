@@ -1,9 +1,11 @@
 <template>
   <div class="mine-main">
     <el-row id="mine-message">
-      <el-col class="message-left" :span="12"></el-col>
+      <el-col class="message-left" :span="12">
+        <img :src="usermessage.avatarUrl" alt="">
+      </el-col>
       <el-col class="message-right" :span="12">
-        <p>象龟1706</p>
+        <p>{{usermessage.nickname}}</p>
         <p>
           <span>开通VIP</span>
           <span>Lv.7</span>
@@ -82,7 +84,22 @@
         </span>
       </el-col>
       <el-col class="song-list" :span="24">
-        <el-row class="song">
+        <el-row v-for="item in userlist" :key="item.id" class="song" @click.native="getmusiclist(item.id)">
+          <el-col class="song-left" :span="4">
+            <img
+              :src="item.coverImgUrl"
+              alt
+            />
+          </el-col>
+          <el-col class="song-main" :span="14">
+            <p>{{item.name}}</p>
+            <p>{{item.trackCount}}首</p>
+          </el-col>
+          <el-col class="song-right" :span="6">
+            <i class="el-icon-more-outline"></i>
+          </el-col>
+        </el-row>
+        <!-- <el-row class="song">
           <el-col class="song-left" :span="4">
             <img
               src="https://p2.music.126.net/RrIyxp5PZccPsHPbuIz2Yg==/109951165167277809.jpg?param=40y40"
@@ -126,22 +143,7 @@
           <el-col class="song-right" :span="8">
             <i class="el-icon-more-outline"></i>
           </el-col>
-        </el-row>
-        <el-row class="song">
-          <el-col class="song-left" :span="4">
-            <img
-              src="https://p2.music.126.net/RrIyxp5PZccPsHPbuIz2Yg==/109951165167277809.jpg?param=40y40"
-              alt
-            />
-          </el-col>
-          <el-col class="song-main" :span="12">
-            <p>象龟1706的歌单</p>
-            <p>19首</p>
-          </el-col>
-          <el-col class="song-right" :span="8">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
+        </el-row> -->
       </el-col>
     </el-row>
     <router-view></router-view>
@@ -151,7 +153,37 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      phone: "",
+      password: "",
+      uid: "",
+      oid:[],
+      userlist:[],
+      usermessage:[]
+    };
+  },
+  methods: {
+    load() {
+      this.phone = "18839112889";
+      this.password = "12463294870.";
+      this.$http.get(`/login/cellphone?phone=${this.phone}&password=${this.password}`)
+        .then(async (res) => {
+          this.uid = res.data.account.id;
+          this.usermessage = res.data.profile
+          await this.$http.get(`/user/playlist?uid=${this.uid}`).then((res) => {
+            for(let i = 0 ; i<res.data.playlist.length;i++){
+              this.userlist.push(res.data.playlist[i])
+              this.oid.push(res.data.playlist[i].id)
+            }
+          });
+        });
+    },
+    getmusiclist(id){
+      this.$router.push({path:'/mine/mylist',query:{id:id}});
+    }
+  },
+  created() {
+    this.load();
   },
 };
 </script>
@@ -172,8 +204,11 @@ export default {
   height: 82px;
   border-radius: 50%;
   margin-left: 5px;
-  background: url(https://i01piccdn.sogoucdn.com/46e14360082b507d) no-repeat;
+  // background: url(https://i01piccdn.sogoucdn.com/46e14360082b507d) no-repeat;
   background-size: 80px 80px;
+  img{
+    border-radius: 50%;
+  }
 }
 .message-right {
   width: calc(100% - 100px);

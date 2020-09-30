@@ -63,97 +63,13 @@
         </p>
       </el-col>
       <el-col :span="24" class="bottom-main">
-        <el-row class="main-list">
+        <el-row class="main-list" v-for="(item,index) in list" :key="item.id" @click.native="play(item.id)">
           <el-col class="main-list-left" :span="3">
-            <p>1</p>
+            <p>{{index+1}}</p>
           </el-col>
           <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
-          </el-col>
-          <el-col class="main-list-right" :span="3">
-            <i class="el-icon-more-outline"></i>
-          </el-col>
-        </el-row>
-        <el-row class="main-list">
-          <el-col class="main-list-left" :span="3">
-            <p>1</p>
-          </el-col>
-          <el-col class="main-list-main" :span="18">
-            <p>凡人</p>
-            <p>段奥娟-《凡人修仙传》</p>
+            <p>{{item.name}}</p>
+            <p>{{item.ar[0].name}}</p>
           </el-col>
           <el-col class="main-list-right" :span="3">
             <i class="el-icon-more-outline"></i>
@@ -161,23 +77,39 @@
         </el-row>
       </el-col>
     </el-row>
+    <!-- <input type="text" value="测试" /> -->
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      list: [],
+      id: "",
+    };
   },
   methods: {
     getMusicList() {
-      this.$http.get("/user/detail?uid=507450593").then((res) => {
-        console.log(res);
+      this.id = this.$route.query.id;
+      this.$http.get(`/playlist/detail?id=${this.id}`).then((res) => {
+        this.list = res.data.playlist.tracks;
+        console.log(this.list);
       });
     },
+    play(id){
+      alert(id)
+      this.$router.push({path:'/audio',query:{id:id}});
+    }
+    // search() {
+    //   this.$http.get('/search?keywords= 海阔天空').then((res)=>{
+    //     console.log(res)
+    //   })
+    // },
   },
   created() {
     this.getMusicList();
+    // this.search()
   },
 };
 </script>
@@ -272,6 +204,9 @@ export default {
       p:nth-child(1) {
         height: 20px;
         margin-top: 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       p:nth-child(2) {
         height: 20px;
