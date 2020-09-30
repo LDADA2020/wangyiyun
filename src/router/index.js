@@ -28,38 +28,38 @@ const router = new VueRouter({
         },
         {
             path: '/village',
-            component: () => import('../views/village/index.vue'),
-            redirect: '/village/square',
-            children: [{
-                path: 'square',
-                name: 'Square',
-                component: () => import("../views/village/square/index.vue")
-            }, {
-                path: 'concer',
-                name: 'Concer',
-                component: () => import("../views/village/concer/index.vue")
-            }]
+            component: () =>
+                import ('../views/village/index.vue')
         },
         {
             path: '/video',
-            component: () => import('../views/video/index.vue'),
+            component: () =>
+                import ('../views/video/index.vue'),
             redirect: '/video/tui',
             children: [{
                     path: 'tui',
-                    component: () => import('../views/video/tui/index.vue')
+                    component: () =>
+                        import ('../views/video/tui/index.vue'),
                 },
                 {
                     path: 'zhibo',
-                    component: () => import('../views/video/zhibo/index.vue')
-                }, {
-                    path: 'music',
-                    component: () => import('../views/video/music/index.vue')
-                }, {
-                    path: 'xian',
-                    component: () => import('../views/video/xian/index.vue')
-                }, {
+                    component: () =>
+                        import ('../views/video/zhibo/index.vue'),
+                },
+                {
                     path: 'fan',
-                    component: () => import('../views/video/fan/index.vue')
+                    component: () =>
+                        import ('../views/video/fan/index.vue'),
+                },
+                {
+                    path: 'xian',
+                    component: () =>
+                        import ('../views/video/xian/index.vue'),
+                },
+                {
+                    path: 'music',
+                    component: () =>
+                        import ('../views/video/music/index.vue'),
                 }
             ]
         },
