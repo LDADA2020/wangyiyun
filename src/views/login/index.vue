@@ -122,7 +122,8 @@ export default {
   // line-height: 50px;
   text-align: center;
   margin-left: 20px;
-  background: rgba(0, 0, 0, 0.7);
+  background: white;
+  opacity: 0.7;
 }
 .text {
   text-align: center;

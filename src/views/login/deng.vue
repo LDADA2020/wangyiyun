@@ -53,14 +53,19 @@ export default {
         console.log(res);
         if (res.data.code == 200) {
           const id = res.data.account.id;
-          console.log(id);
+          // console.log(id);
 
           const Tid = res.data.token;
-          console.log(Tid);
+          alert(Tid);
           setToken(Tid);
           this.$router.push({
-            path: "/",
+            path: "/mine",
+            query: {
+              id: id,
+            },
           });
+        } else {
+          alert("密码错误,请输入正确的密码");
         }
       });
     },
@@ -74,5 +79,4 @@ export default {
 };
 </script>
 <style scoped>
-
 </style>
