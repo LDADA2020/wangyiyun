@@ -62,5 +62,7 @@
   "bugs": {
     "url": "https://github.com/1246329487/music/issues"
   },
-  "homepage": "https://github.com/1246329487/music#readme"
+  "homepage": "https://github.com/1246329487/music#readme",
+  "description": "```\r npm install\r ```",
+  "keywords": []
 }
