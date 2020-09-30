@@ -1,25 +1,23 @@
 <template>
-  <div class="audio-b-c">
+  <div class="audio-b-c" :style="{ backgroundImage: 'url(' + src2 + ')' }">
     <div class="heise"></div>
     <div id="audio-index" class="index">
       <div class="audioD1">
         <div class="audioD1-1">
-          <i class="el-icon-back"></i>
+          <i class="el-icon-back" @click="fanhui()"></i>
           <div class="audioD1-geming">
-            <span>{{ 一念之间 }}</span
+            <span>{{ geming111 }}</span
             ><br />
-            <time><a href="#">张杰></a></time>
+            <time
+              ><a href="#">{{ geshou111 }}></a></time
+            >
           </div>
         </div>
         <div class="audioD1-1"><i class="el-icon-more"></i></div>
       </div>
       <div class="audioD2">
         <div class="audioD2-img">
-          <img
-            class="tp"
-            src="https://p2.music.126.net/OjItC1KtO-Jg_lBVqsihkQ==/109951165341263996.jpg"
-            alt=""
-          />
+          <img class="tp" :src="src1" alt="" />
         </div>
       </div>
       <div class="shoucang">
@@ -68,7 +66,11 @@ export default {
   name: "index",
   data() {
     return {
+      geming111: "",
+      geshou111: "",
       url: "",
+      src1: "",
+      src2: "",
       style1: {
         display: "block",
         "font-size": "50px",
@@ -77,13 +79,18 @@ export default {
         display: "none",
         "font-size": "50px",
       },
+      // style3:{
+      //    "background": "url(${src1})900px center";
+      //    "height": "100vh";
+      // }
     };
   },
   created() {
     // 实例被创建之后执行代码
     const id = this.$route.query.id;
-    console.log(id);
+    // console.log(id);
     this.getge(id);
+    this.geshoude(id);
   },
   computed: {
     // 计算属性
@@ -107,13 +114,25 @@ export default {
     // 方法
     getge(id) {
       axios.get(`/api/song/url?id=${id}`).then((res) => {
-        console.log(id);
-        console.log(res);
-        console.log(res.data.data[0].url);
+        // console.log(id);
+        // console.log(res);
+        // console.log(res.data.data[0].url);
         this.url = res.data.data[0].url;
       });
     },
-    // manname() {},
+    geshoude(id) {
+      axios.get(`/api/song/detail?ids=${id}`).then((res) => {
+        console.log(res.data.songs[0].al.picUrl);
+        this.geming111 = res.data.songs[0].name;
+        this.geshou111 = res.data.songs[0].ar[0].name;
+        //图片地址   res.data.songs[0].al.picUrl
+        this.src1 = res.data.songs[0].al.picUrl;
+        this.src2 = res.data.songs[0].al.picUrl;
+      });
+    },
+    fanhui() {
+      this.$router.go(-1);
+    },
   },
   mounted() {
     // 页面进入时加载内容
@@ -130,29 +149,35 @@ export default {
 .heise {
   width: 100%;
   height: 100%;
-  background-color: black;
-  opacity: 0.5;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.4;
   position: absolute;
 }
-#audio-index {
-  width: 90%;
-  height: 85%;
-  /* background-color: antiquewhite; */
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  #ic1 {
-    color: black;
-    width: 50px;
-    height: 50px;
-    font-size: 50px;
-  }
-}
+
 .audio-b-c {
-  background: url(https://p2.music.126.net/OjItC1KtO-Jg_lBVqsihkQ==/109951165341263996.jpg)
-    900px center;
+  // background: url(https://p2.music.126.net/OjItC1KtO-Jg_lBVqsihkQ==/109951165341263996.jpg)
+  //   900px center;
   height: 100vh;
+  // background-image: url(https://p1.music.126.net/yjVbsgfNeF2h7fIvnxuZDQ==/18894007811887644.jpg);
+  background-size: 800px;
+  background-origin: border-box;
+  // filter: blur(8px);
+  // z-index: -1;
+  #audio-index {
+    width: 90%;
+    height: 85%;
+    /* background-color: antiquewhite; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    #ic1 {
+      color: black;
+      width: 50px;
+      height: 50px;
+      font-size: 50px;
+    }
+  }
 }
 .audioD1 {
   display: flex;
