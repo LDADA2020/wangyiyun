@@ -61,7 +61,6 @@ export default {
       this.$http({
         method:'get',
         url:'/api/comment/hotwall/list'
-
       }).then((res)=>{
         console.log(res)
       })
