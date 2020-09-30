@@ -125,7 +125,7 @@ export default {
     },
 
     goToSongDetail(id) {
-      alert(id);
+      this.$router.push(`/audio?id=${id}`);
     },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
